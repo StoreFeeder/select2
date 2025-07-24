@@ -384,6 +384,18 @@ the specific language governing permissions and limitations under the Apache Lic
         });
     }
 
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function (s) {
+        return ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        })[s];
+      });
+    }
+
     /**
      * Produces an ajax-based query function
      *
@@ -1905,14 +1917,14 @@ the specific language governing permissions and limitations under the Apache Lic
             if (maxSelSize >=1) {
                 data = this.data();
                 if ($.isArray(data) && data.length >= maxSelSize && checkFormatter(opts.formatSelectionTooBig, "formatSelectionTooBig")) {
-                    render("<li class='select2-selection-limit'>" + evaluate(opts.formatSelectionTooBig, opts.element, maxSelSize) + "</li>");
+                    render("<li class='select2-selection-limit'>" + escapeHtml(evaluate(opts.formatSelectionTooBig, opts.element, maxSelSize)) + "</li>");
                     return;
                 }
             }
 
             if (search.val().length < opts.minimumInputLength) {
                 if (checkFormatter(opts.formatInputTooShort, "formatInputTooShort")) {
-                    render("<li class='select2-no-results'>" + evaluate(opts.formatInputTooShort, opts.element, search.val(), opts.minimumInputLength) + "</li>");
+                    render("<li class='select2-no-results'>" + escapeHtml(evaluate(opts.formatInputTooShort, opts.element, search.val(), opts.minimumInputLength)) + "</li>");
                 } else {
                     render("");
                 }
@@ -1922,7 +1934,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             if (opts.maximumInputLength && search.val().length > opts.maximumInputLength) {
                 if (checkFormatter(opts.formatInputTooLong, "formatInputTooLong")) {
-                    render("<li class='select2-no-results'>" + evaluate(opts.formatInputTooLong, opts.element, search.val(), opts.maximumInputLength) + "</li>");
+                    render("<li class='select2-no-results'>" + escapeHtml(evaluate(opts.formatInputTooLong, opts.element, search.val(), opts.maximumInputLength)) + "</li>");
                 } else {
                     render("");
                 }
@@ -1930,7 +1942,7 @@ the specific language governing permissions and limitations under the Apache Lic
             }
 
             if (opts.formatSearching && this.findHighlightableChoices().length === 0) {
-                render("<li class='select2-searching'>" + evaluate(opts.formatSearching, opts.element) + "</li>");
+                render("<li class='select2-searching'>" + escapeHtml(evaluate(opts.formatSearching, opts.element)) + "</li>");
             }
 
             search.addClass("select2-active");
@@ -1967,7 +1979,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
                 // handle ajax error
                 if(data.hasError !== undefined && checkFormatter(opts.formatAjaxError, "formatAjaxError")) {
-                    render("<li class='select2-ajax-error'>" + evaluate(opts.formatAjaxError, opts.element, data.jqXHR, data.textStatus, data.errorThrown) + "</li>");
+                    render("<li class='select2-ajax-error'>" + escapeHtml(evaluate(opts.formatAjaxError, opts.element, data.jqXHR, data.textStatus, data.errorThrown)) + "</li>");
                     return;
                 }
 
@@ -1987,7 +1999,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 }
 
                 if (data.results.length === 0 && checkFormatter(opts.formatNoMatches, "formatNoMatches")) {
-                    render("<li class='select2-no-results'>" + evaluate(opts.formatNoMatches, opts.element, search.val()) + "</li>");
+                    render("<li class='select2-no-results'>" + escapeHtml(evaluate(opts.formatNoMatches, opts.element, search.val())) + "</li>");
                     if(this.showSearch){
                         this.showSearch(search.val());
                     }
@@ -3358,7 +3370,7 @@ the specific language governing permissions and limitations under the Apache Lic
             if(!this.opts.createSearchChoice && !choices.filter('.select2-result:not(.select2-selected)').length > 0){
                 if(!data || data && !data.more && this.results.find(".select2-no-results").length === 0) {
                     if (checkFormatter(self.opts.formatNoMatches, "formatNoMatches")) {
-                        this.results.append("<li class='select2-no-results'>" + evaluate(self.opts.formatNoMatches, self.opts.element, self.search.val()) + "</li>");
+                        this.results.append("<li class='select2-no-results'>" + escapeHtml(evaluate(self.opts.formatNoMatches, self.opts.element, self.search.val())) + "</li>");
                     }
                 }
             }
