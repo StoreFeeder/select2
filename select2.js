@@ -3265,7 +3265,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             formatted=this.opts.formatSelection(data, choice.find("div"), this.opts.escapeMarkup);
             if (formatted != undefined) {
-                choice.find("div").replaceWith($("<div></div>").html(formatted));
+                choice.find("div").replaceWith($("<div></div>").html(escapeHtml(data.text)));
             }
             cssClass=this.opts.formatSelectionCssClass(data, choice.find("div"));
             if (cssClass != undefined) {
@@ -3632,15 +3632,15 @@ the specific language governing permissions and limitations under the Apache Lic
         containerCssClass: "",
         dropdownCssClass: "",
         formatResult: function(result, container, query, escapeMarkup) {
-            var markup=[];
-            markMatch(this.text(result), query.term, markup, escapeMarkup);
+            var markup = [];
+            markup.push("<div class='select2-result-label'>" + escapeHtml(result.text) + "</div>");
             return markup.join("");
         },
         transformVal: function(val) {
             return $.trim(val);
         },
         formatSelection: function (data, container, escapeMarkup) {
-            return data ? escapeMarkup(this.text(data)) : undefined;
+            return escapeHtml(data.text);
         },
         sortResults: function (results, container, query) {
             return results;
